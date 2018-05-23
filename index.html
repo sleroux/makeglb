@@ -105,6 +105,7 @@
           reader.readAsText(file);
           reader.onload = function(event) {
             gltf = JSON.parse(event.target.result);
+            fixScaling();
             checkRemaining();
             };
         }
@@ -309,6 +310,14 @@ function getMimeType(filename) {
     }
     return 'application/octet-stream';
 }
+
+function fixScaling() {
+    var objNode = gltf.nodes[0];
+    objNode.scale = objNode.scale.map(function (v) { return v / 100; });
+    objNode.translation = objNode.translation.map(function (v) { return v / 100; });
+    gltf.nodes[0] = objNode;
+}
+
 
 var gltfMimeTypes = {
     'image/png': ['png'],
